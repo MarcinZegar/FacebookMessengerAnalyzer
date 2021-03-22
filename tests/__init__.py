@@ -1,1 +1,0 @@
-from FacebookMessengerAnalyzer.FacebookMessengerAnalyzer import IndividualMesseges
