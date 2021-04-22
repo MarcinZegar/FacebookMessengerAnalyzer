@@ -10,7 +10,7 @@ Welcome to Facebook Messenger Analyzer's documentation!
    :maxdepth: 2
    :caption: Python API:
 
-   IndividualMesseges <api/facebookmessenger.rst>
+   IndividualMesseges <source/api/facebookmessenger.rst>
 
 Indices and tables
  ==================
