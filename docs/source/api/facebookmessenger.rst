@@ -2,7 +2,7 @@
 Facebook Messenger Analyzer
 ==============
 
-.. currentmodule:: FacebookMessengerAnalyzer.IndividualMesseges
+.. currentmodule:: FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges
 
-.. autoclass:: FacebookMessengerAnalyzer.IndividualMesseges
+.. autoclass:: FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges
     :members:
