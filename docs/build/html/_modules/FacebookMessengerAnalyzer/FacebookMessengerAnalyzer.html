@@ -1,0 +1,671 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>FacebookMessengerAnalyzer.FacebookMessengerAnalyzer &mdash; Facebook Messenger Analyzer March 22,2021 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Facebook Messenger Analyzer
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Python API:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/facebookmessenger.html">IndividualMesseges</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Facebook Messenger Analyzer</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>FacebookMessengerAnalyzer.FacebookMessengerAnalyzer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for FacebookMessengerAnalyzer.FacebookMessengerAnalyzer</h1><div class="highlight"><pre>
+<span></span><span class="c1">#import libraies which will be used throughout </span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span> 
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">nltk.sentiment.vader</span> <span class="kn">import</span> <span class="n">SentimentIntensityAnalyzer</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span> 
+<span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
+
+<div class="viewcode-block" id="IndividualMesseges"><a class="viewcode-back" href="../../api/facebookmessenger.html#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges">[docs]</a><span class="k">class</span> <span class="nc">IndividualMesseges</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A library which allows users to you easily run some simple Data Analytics on their Facebook Messenger Data</span>
+
+<span class="sd">    </span>
+<span class="sd">    :param PATH: The Path which conatins the convsersation you want to analyze</span>
+<span class="sd">    :type number: str</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">PATH</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">PATH</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message_file_paths</span> <span class="o">=</span>  <span class="p">[</span><span class="n">PATH</span> <span class="o">+</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="o">+</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">next</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">PATH</span><span class="p">))[</span><span class="mi">2</span><span class="p">]]</span>
+
+
+    <span class="c1">###############################################################################################################################</span>
+<div class="viewcode-block" id="IndividualMesseges.list_of_messages_objects"><a class="viewcode-back" href="../../api/facebookmessenger.html#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.list_of_messages_objects">[docs]</a>    <span class="k">def</span> <span class="nf">list_of_messages_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a list and pandas DataFrame which contians all the messages and interactions present without your conversation </span>
+<span class="sd">        </span>
+<span class="sd">        :param add_date: Default true, highly recommended but optional if you want to have a smaller data frame. OTHER FUNCTIONS WILL NOT WORK IF THIS IS FALSE</span>
+<span class="sd">        :type number: bool</span>
+<span class="sd">        </span>
+<span class="sd">        :param as_DF: Default is True. If set to false, the method will return a dictionary rather than a pandas DataFrame </span>
+<span class="sd">        :type muiltiplier: bool</span>
+
+<span class="sd">        :param as_DF: Default is True. If set to false, the method will not return any data to the user, it will only add it to the object </span>
+<span class="sd">        :type muiltiplier: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c1">#Default Kwargs </span>
+        <span class="n">defaultKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;add_date&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;as_DF&#39;</span> <span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;to_return&#39;</span> <span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="o">**</span><span class="n">defaultKwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span> <span class="p">}</span>
+        
+        
+        <span class="c1"># initializing empty list for a messenger JSONs</span>
+        <span class="n">JSON</span><span class="o">=</span> <span class="p">[]</span> 
+        
+        <span class="c1">#load all files and put their content into one list</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message_file_paths</span><span class="p">)):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">message_file_paths</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">JSON</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+
+
+        <span class="c1"># initializing empty list for message objects</span>
+        <span class="n">all_messages_dictionary</span><span class="o">=</span>  <span class="p">[]</span>
+
+        <span class="c1">#loop through all the loaded json object and extract the message objects</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">JSON</span><span class="p">)):</span>
+            <span class="n">all_messages_dictionary</span><span class="o">+=</span> <span class="n">JSON</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;messages&quot;</span><span class="p">]</span>
+
+        
+        <span class="c1">#add the dictionary to the object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_messages_dictionary</span> <span class="o">=</span> <span class="n">all_messages_dictionary</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;add_date&#39;</span><span class="p">]:</span>
+
+            <span class="c1">#date format: dd/mm/yyyy</span>
+            <span class="n">format_date</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y&quot;</span>
+
+            <span class="c1">#Time format:HH:MM:SS</span>
+            <span class="n">format_time</span> <span class="o">=</span> <span class="s2">&quot;%H:%M:%S&quot;</span>
+    
+            <span class="c1">#loop through each message object and add a datetime object, the month, year, day, and time </span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">all_messages_dictionary</span><span class="p">:</span>
+                <span class="n">ts</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="s2">&quot;timestamp_ms&quot;</span><span class="p">]</span>
+                <span class="n">date_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">ts</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">)</span>
+                <span class="n">i</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">format_date</span><span class="p">)</span>
+                <span class="n">i</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">format_time</span><span class="p">)</span>
+                <span class="n">i</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date_time</span><span class="o">.</span><span class="n">year</span>
+                <span class="n">i</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">date_time</span><span class="o">.</span><span class="n">month</span>
+                <span class="n">i</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]</span><span class="o">=</span> <span class="n">date_time</span><span class="o">.</span><span class="n">day</span>
+
+        <span class="c1">#add the pandas DF to the object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_messages_DF</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_messages_dictionary</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;to_return&#39;</span><span class="p">]</span> <span class="o">&amp;</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;as_DF&#39;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_messages_DF</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;to_return&#39;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_messages_dictionary</span></div>
+        
+    <span class="c1">###############################################################################################################################</span>
+<div class="viewcode-block" id="IndividualMesseges.counter"><a class="viewcode-back" href="../../api/facebookmessenger.html#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.counter">[docs]</a>    <span class="k">def</span> <span class="nf">counter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Count the number of messages sent in the conversation</span>
+<span class="sd">        </span>
+<span class="sd">        :param Total: Default as True which return the count of ALL messages sent, if False, it will return a dict with the count each participant sent</span>
+<span class="sd">        :type number: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#checking if count has already run to save comptational requirements. If not, pass and run the count</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">total</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="c1"># Use a default Dict incase there is a participant with NO messages sent but in the chat. A set helps keep track of the participants </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span>  <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">senders</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1">#Checking if dictionary of messages already exist, if not, need to run that method in the except </span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">all_messages_dictionary</span>
+
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_of_messages_objects</span><span class="p">(</span><span class="n">to_return</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># a simple counter of the number of messages and the senders     </span>
+        <span class="k">for</span> <span class="n">messeges</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_messages_dictionary</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">senders</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">messeges</span><span class="p">[</span><span class="s1">&#39;sender_name&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">[</span><span class="n">messeges</span><span class="p">[</span><span class="s1">&#39;sender_name&#39;</span><span class="p">]]</span><span class="o">+=</span><span class="mi">1</span>
+        
+        <span class="c1">#if statment to check if we are returning total or dictionary  </span>
+        <span class="k">if</span> <span class="n">total</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">count</span><span class="p">)</span></div>
+
+    <span class="c1">###############################################################################################################################</span>
+
+<div class="viewcode-block" id="IndividualMesseges.participants"><a class="viewcode-back" href="../../api/facebookmessenger.html#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.participants">[docs]</a>    <span class="k">def</span> <span class="nf">participants</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Simple method to grab the participants if needed. Very similar to counter </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">senders</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">senders</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">all_messages_dictionary</span>
+
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_of_messages_objects</span><span class="p">(</span><span class="n">to_return</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+            
+        <span class="k">for</span> <span class="n">messeges</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_messages_dictionary</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">senders</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">messeges</span><span class="p">[</span><span class="s1">&#39;sender_name&#39;</span><span class="p">])</span>
+        
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">senders</span><span class="p">)</span></div>
+       
+     <span class="c1">###############################################################################################################################</span>
+
+    
+<div class="viewcode-block" id="IndividualMesseges.describe"><a class="viewcode-back" href="../../api/facebookmessenger.html#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">print_</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method will provide a summary of the convseration to the user. Metric like:</span>
+<span class="sd">        Total Messages Sent</span>
+<span class="sd">        Messages Sent by Each Participant </span>
+<span class="sd">        The date when the First and Last Messages were sent</span>
+<span class="sd">        The Difference between the First and Last Messages (In days)</span>
+<span class="sd">        The Total Days actually spoken on </span>
+<span class="sd">        The Average Message Count Per Day when Messages were actively Exchanged </span>
+<span class="sd">        </span>
+<span class="sd">        :param print_: Default is True, To print out a table of the measures(if true) or to return a dictionary of the metrics</span>
+<span class="sd">        :type number: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#Use a Default dict to excase error messages</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">describe</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1">#grab the total amount sent from the counter method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s2">&quot;Total Messages&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1">#grad the total amount sent by each participant from the counter method</span>
+        <span class="k">for</span> <span class="n">sender</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span><span class="kc">False</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s2">&quot;Messages Sent by </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">sender</span><span class="p">]</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">(</span><span class="kc">False</span><span class="p">)[</span><span class="n">sender</span><span class="p">]</span>
+
+        <span class="c1">#Grab dates from the pandas Data Frame</span>
+        <span class="n">first_message</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_messages_DF</span><span class="p">[</span><span class="s2">&quot;timestamp_ms&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">)</span>
+        <span class="n">last_message</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_messages_DF</span><span class="p">[</span><span class="s2">&quot;timestamp_ms&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">)</span>
+        <span class="n">total_time</span> <span class="o">=</span><span class="n">last_message</span> <span class="o">-</span> <span class="n">first_message</span>
+
+        <span class="c1">#add the dates to the dictionary </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s2">&quot;First Messsage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">first_message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s2">&quot;Last Messsage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">last_message</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s2">&quot;Difference Between First and Last&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">total_time</span><span class="o">.</span><span class="n">days</span>
+
+        <span class="c1">#Use the unique function within pandas to grab the unique dates as the days conversation was conducted</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s2">&quot;Total Days Spoken&quot;</span><span class="p">]</span><span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_messages_DF</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]))</span>
+
+        <span class="c1">#Total messages over the days of active conversation </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s2">&quot;Average Message Count Per Day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s2">&quot;Total Messages&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">[</span><span class="s2">&quot;Total Days Spoken&quot;</span><span class="p">]</span>
+
+        <span class="c1">#To print a nice a table or return a dictionary of values</span>
+        <span class="k">if</span> <span class="n">print_</span><span class="p">:</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Metric&#39;</span><span class="p">,</span> <span class="s1">&#39;Value&#39;</span><span class="p">]</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">)</span></div>
+
+     <span class="c1">###############################################################################################################################</span>
+
+<div class="viewcode-block" id="IndividualMesseges.first_x_messages"><a class="viewcode-back" href="../../api/facebookmessenger.html#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.first_x_messages">[docs]</a>    <span class="k">def</span> <span class="nf">first_x_messages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">first_x_messages</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a data frame of the first X interactions </span>
+<span class="sd">        </span>
+<span class="sd">        :param first_x_messages: The number of messages to return</span>
+<span class="sd">        :type number: int</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1">#Checking if the method with the dictionary of messages has already run </span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">all_messages_DF</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_of_messages_objects</span><span class="p">(</span><span class="n">to_return</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1">#retusna dict of the first X messages</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_messages_DF</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;timestamp_ms&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">first_x_messages</span><span class="p">)</span></div>
+
+
+     <span class="c1">###############################################################################################################################</span>
+
+<div class="viewcode-block" id="IndividualMesseges.sent_analyzer"><a class="viewcode-back" href="../../api/facebookmessenger.html#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.sent_analyzer">[docs]</a>    <span class="k">def</span> <span class="nf">sent_analyzer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        VADER Sentiment Analysis. </span>
+<span class="sd">        VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon and rule-based sentiment analysis tool that is specifically attuned to </span>
+<span class="sd">        sentiments expressed in social media, and works well on texts from other domains.</span>
+<span class="sd">        The VADER lexicon is an empirically validated by multiple independent human judges, VADER incorporates a &quot;gold-standard&quot;  sentiment lexicon that is </span>
+<span class="sd">        especially attuned to microblog-like contexts. </span>
+<span class="sd">        </span>
+<span class="sd">        This method runs this sentiments analysis on all messages in the Pandas Data Frame</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1">#making sure the vader lexicon is downloaded and available </span>
+        <span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s2">&quot;vader_lexicon&quot;</span><span class="p">)</span>
+
+        <span class="c1">#Checking if the method with the dictionary of messages has already run </span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">all_messages_DF</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_of_messages_objects</span><span class="p">(</span><span class="n">to_return</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1">#initializer the NLTK Sentiment Inentisity Analyzer</span>
+        <span class="n">sentiment_analyzer</span> <span class="o">=</span>  <span class="n">SentimentIntensityAnalyzer</span><span class="p">()</span>
+    
+        <span class="c1">#This fucntion will use the NLTK Sentiment Inentisity Analyzer and assine a score to the text it receives </span>
+        <span class="k">def</span> <span class="nf">polarity_score_on_df</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+            
+            <span class="c1">#check if it is a string as the NLTK Sentiment Inentisity Analyzer will not work</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">content</span><span class="p">)</span><span class="o">==</span> <span class="nb">str</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">sentiment_analyzer</span><span class="o">.</span><span class="n">polarity_scores</span><span class="p">(</span><span class="n">content</span><span class="p">)[</span><span class="s2">&quot;compound&quot;</span><span class="p">]</span>
+            
+            <span class="c1">#if not string, return a NAN value</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">NAN</span> 
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_messages_DF</span><span class="p">[</span><span class="s2">&quot;sentiment&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_messages_DF</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">polarity_score_on_df</span><span class="p">)</span>
+        
+        <span class="c1">#setting a flag as the sentiment analysis is important later in the class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sentiment_done</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span></div>
+ 
+     <span class="c1">###############################################################################################################################</span>
+<div class="viewcode-block" id="IndividualMesseges.date_backbone_function"><a class="viewcode-back" href="../../api/facebookmessenger.html#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.date_backbone_function">[docs]</a>    <span class="k">def</span> <span class="nf">date_backbone_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This backbone dataframe will be useful for plotting as those months where no conversation was done will be set to zero and not omitted as originally</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#Checking if the method with the dictionary of messages has already run </span>
+        <span class="k">try</span><span class="p">:</span>   
+            <span class="n">ALL_MESSAGES_DF</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_messages_DF</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">list_of_messages_objects</span><span class="p">(</span><span class="n">to_return</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="n">ALL_MESSAGES_DF</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_messages_DF</span>
+
+        <span class="c1">#determing the first year, lst year and last month of conversation  </span>
+        <span class="n">first_year_of_convo</span> <span class="o">=</span> <span class="n">ALL_MESSAGES_DF</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="n">last_year_of_convo</span> <span class="o">=</span> <span class="n">ALL_MESSAGES_DF</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">last_month_of_convo</span> <span class="o">=</span> <span class="n">ALL_MESSAGES_DF</span><span class="p">[</span><span class="n">ALL_MESSAGES_DF</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="n">last_year_of_convo</span><span class="p">][</span><span class="s2">&quot;month&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        
+        <span class="c1">#grab the unique senders</span>
+        <span class="n">participants</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">participants</span><span class="p">())</span>
+        
+        <span class="c1">#The basic structure </span>
+        <span class="n">date_backbone</span> <span class="o">=</span><span class="p">{</span><span class="s2">&quot;month&quot;</span><span class="p">:[],</span> <span class="s2">&quot;year&quot;</span><span class="p">:[],</span> <span class="s2">&quot;sender_name&quot;</span><span class="p">:[]</span> <span class="p">}</span>
+        
+        <span class="c1">#for each year, created 12 months of each sender</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">first_year_of_convo</span><span class="p">,</span> <span class="n">last_year_of_convo</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span><span class="n">participants</span><span class="p">)):</span>
+                
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">13</span><span class="p">):</span>
+                    
+                    <span class="n">date_backbone</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+                    <span class="n">date_backbone</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="n">date_backbone</span><span class="p">[</span><span class="s1">&#39;sender_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">participants</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+        <span class="c1">#Convert this dictionary to a data frame</span>
+        <span class="n">date_backbone</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">date_backbone</span><span class="p">)</span> 
+        
+        <span class="c1">#a method to cut the back boine table at the last month of interaction  </span>
+        <span class="n">today_month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%m&quot;</span><span class="p">))</span>
+        <span class="n">today_year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y&quot;</span><span class="p">))</span>
+        
+        <span class="k">if</span> <span class="n">today_year</span> <span class="o">==</span> <span class="n">last_year_of_convo</span><span class="p">:</span>
+            
+            <span class="n">index</span> <span class="o">=</span> <span class="n">date_backbone</span><span class="p">[(</span><span class="n">date_backbone</span><span class="o">.</span><span class="n">year</span><span class="o">==</span><span class="n">today_year</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">date_backbone</span><span class="o">.</span><span class="n">month</span><span class="o">&gt;</span> <span class="n">today_month</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span>
+            <span class="n">date_backbone</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">date_backbone</span> <span class="o">=</span> <span class="n">date_backbone</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+            <span class="n">date_backbone</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            
+        <span class="k">else</span><span class="p">:</span>
+            
+            <span class="n">index</span> <span class="o">=</span> <span class="n">date_backbone</span><span class="p">[(</span><span class="n">date_backbone</span><span class="o">.</span><span class="n">year</span><span class="o">==</span><span class="n">last_year_of_convo</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">date_backbone</span><span class="o">.</span><span class="n">month</span><span class="o">&gt;</span> <span class="n">last_month_of_convo</span><span class="p">)]</span><span class="o">.</span><span class="n">index</span>
+            <span class="n">date_backbone</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">date_backbone</span> <span class="o">=</span> <span class="n">date_backbone</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+            <span class="n">date_backbone</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;index&quot;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+         <span class="c1">#Set the date backbone to be part of the object   </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">date_backbone</span><span class="o">=</span> <span class="n">date_backbone</span></div>
+    <span class="c1">###############################################################################################################################</span>
+
+<div class="viewcode-block" id="IndividualMesseges.aggreagte_by_month_year"><a class="viewcode-back" href="../../api/facebookmessenger.html#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.aggreagte_by_month_year">[docs]</a>    <span class="k">def</span> <span class="nf">aggreagte_by_month_year</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_return</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method will aggregate results by the month (count and sentiments) to provide visuals for historic conversation data without being too volitile. </span>
+<span class="sd">        A Day Aggregator is in the works</span>
+<span class="sd">    </span>
+<span class="sd">        </span>
+<span class="sd">        :param to_return: Default is False. Change to True to return the dataframe</span>
+<span class="sd">        :type number: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c1">#Checking if the sentiment was done</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sentiment_done</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sent_analyzer</span><span class="p">()</span>
+
+        <span class="c1">#Checking if the datebackbone was created</span>
+        <span class="k">try</span><span class="p">:</span>   
+            <span class="n">date_backbone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">date_backbone</span>
+            
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">date_backbone_function</span><span class="p">()</span>
+            <span class="n">date_backbone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">date_backbone</span>
+
+        <span class="c1">#checking if the aggregation was done to save commutational requirements</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">to_return</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Final_year_month</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">Final_year_month</span>
+        <span class="k">except</span><span class="p">:</span>
+        <span class="c1">#All messages Data frame</span>
+            <span class="n">ALL_MESSAGES_DF</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_messages_DF</span>
+        
+        <span class="c1">#Group the data by month, year and sender name to be a bit less volatile </span>
+            <span class="n">year_month</span><span class="o">=</span> <span class="n">ALL_MESSAGES_DF</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span><span class="s2">&quot;sender_name&quot;</span><span class="p">])[</span><span class="s2">&quot;sentiment&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+        <span class="c1">#merge the aggregated DataFrame with the Back bone to fill in the holes with zero messages</span>
+            <span class="n">Final_year_month</span> <span class="o">=</span> <span class="n">date_backbone</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">year_month</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span> <span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;sender_name&quot;</span><span class="p">],</span> <span class="n">left_on</span><span class="o">=</span> <span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;sender_name&quot;</span><span class="p">],</span> <span class="n">how</span> <span class="o">=</span><span class="s2">&quot;left&quot;</span> <span class="p">)</span>
+            <span class="n">Final_year_month</span> <span class="o">=</span> <span class="n">Final_year_month</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1">#Change the date object to a year/month object for graphing  </span>
+            <span class="n">Final_year_month</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">Final_year_month</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;str&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">Final_year_month</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;str&quot;</span><span class="p">),</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;%Y%m&#39;</span><span class="p">)</span>
+
+        <span class="c1">#Sort the data my date</span>
+            <span class="n">Final_year_month</span><span class="o">=</span> <span class="n">Final_year_month</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span> <span class="o">=</span><span class="s2">&quot;date&quot;</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1">#set the results to the object and then return if requested </span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Final_year_month</span> <span class="o">=</span> <span class="n">Final_year_month</span>
+            <span class="k">if</span> <span class="n">to_return</span><span class="o">==</span><span class="kc">True</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Final_year_month</span></div>
+     <span class="c1">###############################################################################################################################</span>
+    
+<div class="viewcode-block" id="IndividualMesseges.plot_sentiments"><a class="viewcode-back" href="../../api/facebookmessenger.html#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.plot_sentiments">[docs]</a>    <span class="k">def</span> <span class="nf">plot_sentiments</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">toReturn</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method will provide a plot of the aggregated sentiment data discussed in the aggreagte_by_month_year method</span>
+<span class="sd">        </span>
+<span class="sd">        :param to_return: Default is False. If True will return the user setiments per months, per user</span>
+<span class="sd">        :type number: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#Checking if the method with the dictionary of messages has already run </span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">Final_year_month</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Final_year_month</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">aggreagte_by_month_year</span><span class="p">()</span>
+            <span class="n">Final_year_month</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Final_year_month</span>
+            
+
+        <span class="c1">#Unique members   </span>
+        <span class="n">members</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">participants</span><span class="p">())</span>
+
+        <span class="c1">#Extract the date for each user to provide seperate lines rather than one summation line</span>
+        <span class="n">member_setiments</span><span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">members</span><span class="p">)):</span>
+            <span class="n">member_data</span><span class="o">=</span> <span class="n">Final_year_month</span><span class="p">[</span><span class="n">Final_year_month</span><span class="o">.</span><span class="n">sender_name</span> <span class="o">==</span> <span class="n">members</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+            <span class="n">member_setiments</span><span class="p">[</span><span class="n">members</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">=</span> <span class="p">[</span>
+                <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">member_data</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;str&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">member_data</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;str&quot;</span><span class="p">),</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;%Y%m&#39;</span><span class="p">),</span>
+                <span class="n">member_data</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span> <span class="p">]</span>
+            
+        <span class="c1">#If the user wnats the date returned and not the plot</span>
+        <span class="k">if</span> <span class="n">toReturn</span><span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">member_setiments</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+    
+        <span class="c1">#Plot the data            </span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+            
+        <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">members</span><span class="p">:</span>
+                
+             <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">member_setiments</span><span class="p">[</span><span class="n">member</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">member_setiments</span><span class="p">[</span><span class="n">member</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="n">member</span><span class="p">)</span>
+                
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+     <span class="c1">###############################################################################################################################</span>
+<div class="viewcode-block" id="IndividualMesseges.plot_counts"><a class="viewcode-back" href="../../api/facebookmessenger.html#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.plot_counts">[docs]</a>    <span class="k">def</span> <span class="nf">plot_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">toReturn</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method will provide a plot of the aggregated message count data discussed in the aggreagte_by_month_year method</span>
+<span class="sd">        </span>
+<span class="sd">        :param to_return: Default is False. If True will return the user setiments per months, per user</span>
+<span class="sd">        :type number: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#Checking if the method with the dictionary of messages has already run </span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">Final_year_month</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Final_year_month</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">aggreagte_by_month_year</span><span class="p">()</span>
+            <span class="n">Final_year_month</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Final_year_month</span>
+            
+
+        <span class="c1">#Unique members   </span>
+        <span class="n">members</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">participants</span><span class="p">())</span>
+
+        <span class="c1">#Extract the date for each user to provide seperate lines rather than one summation line</span>
+        <span class="n">member_setiments</span><span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">members</span><span class="p">)):</span>
+            <span class="n">member_data</span><span class="o">=</span> <span class="n">Final_year_month</span><span class="p">[</span><span class="n">Final_year_month</span><span class="o">.</span><span class="n">sender_name</span> <span class="o">==</span> <span class="n">members</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+            <span class="n">member_setiments</span><span class="p">[</span><span class="n">members</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">=</span> <span class="p">[</span>
+                <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">member_data</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;str&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">member_data</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;str&quot;</span><span class="p">),</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;%Y%m&#39;</span><span class="p">),</span>
+                <span class="n">member_data</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="p">]</span>
+
+        <span class="c1">#If the user wnats the date returned and not the plot    </span>
+        <span class="k">if</span> <span class="n">toReturn</span><span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">member_setiments</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">pass</span>
+    
+        <span class="c1">#Plot the data               </span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+            
+        <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">members</span><span class="p">:</span>
+                
+             <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">member_setiments</span><span class="p">[</span><span class="n">member</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">member_setiments</span><span class="p">[</span><span class="n">member</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="n">member</span><span class="p">)</span>
+                
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Marcin Zegarmistrz.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

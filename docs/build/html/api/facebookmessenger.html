@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Facebook Messenger Analyzer &mdash; Facebook Messenger Analyzer March 22,2021 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Facebook Messenger Analyzer
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Facebook Messenger Analyzer</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Facebook Messenger Analyzer</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Facebook Messenger Analyzer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/api/facebookmessenger.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="facebook-messenger-analyzer">
+<h1>Facebook Messenger Analyzer<a class="headerlink" href="#facebook-messenger-analyzer" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges">
+<em class="property">class </em><code class="sig-prename descclassname">FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.</code><code class="sig-name descname">IndividualMesseges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">PATH</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/FacebookMessengerAnalyzer/FacebookMessengerAnalyzer.html#IndividualMesseges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges" title="Permalink to this definition">¶</a></dt>
+<dd><p>A library which allows users to you easily run some simple Data Analytics on their Facebook Messenger Data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>PATH</strong> – The Path which conatins the convsersation you want to analyze</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.aggreagte_by_month_year">
+<code class="sig-name descname">aggreagte_by_month_year</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">to_return</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/FacebookMessengerAnalyzer/FacebookMessengerAnalyzer.html#IndividualMesseges.aggreagte_by_month_year"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.aggreagte_by_month_year" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method will aggregate results by the month (count and sentiments) to provide visuals for historic conversation data without being too volitile. 
+A Day Aggregator is in the works</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>to_return</strong> – Default is False. Change to True to return the dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.counter">
+<code class="sig-name descname">counter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">total</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/FacebookMessengerAnalyzer/FacebookMessengerAnalyzer.html#IndividualMesseges.counter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.counter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count the number of messages sent in the conversation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>Total</strong> – Default as True which return the count of ALL messages sent, if False, it will return a dict with the count each participant sent</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.date_backbone_function">
+<code class="sig-name descname">date_backbone_function</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/FacebookMessengerAnalyzer/FacebookMessengerAnalyzer.html#IndividualMesseges.date_backbone_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.date_backbone_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>This backbone dataframe will be useful for plotting as those months where no conversation was done will be set to zero and not omitted as originally</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.describe">
+<code class="sig-name descname">describe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">print_</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/FacebookMessengerAnalyzer/FacebookMessengerAnalyzer.html#IndividualMesseges.describe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.describe" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method will provide a summary of the convseration to the user. Metric like:
+Total Messages Sent
+Messages Sent by Each Participant 
+The date when the First and Last Messages were sent
+The Difference between the First and Last Messages (In days)
+The Total Days actually spoken on 
+The Average Message Count Per Day when Messages were actively Exchanged</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>print</strong> – Default is True, To print out a table of the measures(if true) or to return a dictionary of the metrics</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.first_x_messages">
+<code class="sig-name descname">first_x_messages</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">first_x_messages</span><span class="o">=</span><span class="default_value">10</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/FacebookMessengerAnalyzer/FacebookMessengerAnalyzer.html#IndividualMesseges.first_x_messages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.first_x_messages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a data frame of the first X interactions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>first_x_messages</strong> – The number of messages to return</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.list_of_messages_objects">
+<code class="sig-name descname">list_of_messages_objects</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/FacebookMessengerAnalyzer/FacebookMessengerAnalyzer.html#IndividualMesseges.list_of_messages_objects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.list_of_messages_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a list and pandas DataFrame which contians all the messages and interactions present without your conversation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>add_date</strong> – Default true, highly recommended but optional if you want to have a smaller data frame. OTHER FUNCTIONS WILL NOT WORK IF THIS IS FALSE</p></li>
+<li><p><strong>as_DF</strong> – Default is True. If set to false, the method will return a dictionary rather than a pandas DataFrame</p></li>
+<li><p><strong>as_DF</strong> – Default is True. If set to false, the method will not return any data to the user, it will only add it to the object</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.participants">
+<code class="sig-name descname">participants</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/FacebookMessengerAnalyzer/FacebookMessengerAnalyzer.html#IndividualMesseges.participants"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.participants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple method to grab the participants if needed. Very similar to counter</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.plot_counts">
+<code class="sig-name descname">plot_counts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">toReturn</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/FacebookMessengerAnalyzer/FacebookMessengerAnalyzer.html#IndividualMesseges.plot_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.plot_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method will provide a plot of the aggregated message count data discussed in the aggreagte_by_month_year method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>to_return</strong> – Default is False. If True will return the user setiments per months, per user</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.plot_sentiments">
+<code class="sig-name descname">plot_sentiments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">toReturn</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/FacebookMessengerAnalyzer/FacebookMessengerAnalyzer.html#IndividualMesseges.plot_sentiments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.plot_sentiments" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method will provide a plot of the aggregated sentiment data discussed in the aggreagte_by_month_year method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>to_return</strong> – Default is False. If True will return the user setiments per months, per user</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.sent_analyzer">
+<code class="sig-name descname">sent_analyzer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/FacebookMessengerAnalyzer/FacebookMessengerAnalyzer.html#IndividualMesseges.sent_analyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#FacebookMessengerAnalyzer.FacebookMessengerAnalyzer.IndividualMesseges.sent_analyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>VADER Sentiment Analysis. 
+VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon and rule-based sentiment analysis tool that is specifically attuned to 
+sentiments expressed in social media, and works well on texts from other domains.
+The VADER lexicon is an empirically validated by multiple independent human judges, VADER incorporates a “gold-standard”  sentiment lexicon that is 
+especially attuned to microblog-like contexts.</p>
+<p>This method runs this sentiments analysis on all messages in the Pandas Data Frame</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Marcin Zegarmistrz.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
